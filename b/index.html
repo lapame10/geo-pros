@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf7f2">
+<title>Geo Pros Championship</title>
+<style>
+  :root{
+    --paper:#faf7f2; --paper2:#f3eee5; --ink:#1a1613; --ink2:#6d645c; --ink3:#a2988c;
+    --rule:#ddd4c7; --rule2:#ebe4d9;
+    --red:#b8352c; --p1:#1d4ed8; --p2:#166534; --p3:#b45309;
+    --serif:Georgia,'Times New Roman',Times,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --m:ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:15px;-webkit-text-size-adjust:100%}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px 56px}
+
+  /* ---------- cabecera editorial ---------- */
+  .head{padding:calc(env(safe-area-inset-top,0px) + 26px) 20px 0;text-align:center}
+  .kicker{font-size:9px;letter-spacing:4px;color:var(--ink3);text-transform:uppercase;
+    font-weight:700;margin-bottom:12px}
+  .rule-d{height:0;border-top:3px double var(--ink);margin:0 0 14px}
+  .title{font-family:var(--serif);font-size:38px;line-height:.94;font-weight:400;
+    letter-spacing:-1.2px;margin:0}
+  .title em{font-style:italic;color:var(--red)}
+  .sub{font-family:var(--serif);font-size:12.5px;font-style:italic;color:var(--ink2);
+    margin:11px 0 0}
+  .rule-d.b{margin:14px 0 0}
+
+  /* ---------- titular ---------- */
+  .lead{padding:22px 20px 0;text-align:center}
+  .lead .cap{font-size:8.5px;letter-spacing:3px;color:var(--red);text-transform:uppercase;
+    font-weight:800;margin-bottom:9px}
+  .lead h2{font-family:var(--serif);font-size:26px;line-height:1.12;font-weight:400;
+    margin:0;letter-spacing:-.5px}
+  .lead h2 b{font-weight:700}
+  .lead p{font-size:12px;color:var(--ink2);margin:10px 0 0;line-height:1.6}
+
+  /* ---------- tabla del lider ---------- */
+  .stand{margin-top:24px}
+  .strow{display:flex;align-items:baseline;gap:12px;padding:13px 4px;
+    border-top:1px solid var(--rule)}
+  .strow:last-child{border-bottom:1px solid var(--rule)}
+  .strow .n{font-family:var(--serif);font-size:15px;color:var(--ink3);width:22px;flex:0 0 22px}
+  .strow .info{flex:1;min-width:0}
+  .strow .who{font-family:var(--serif);font-size:19px;letter-spacing:-.3px}
+  .strow .who i{display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--c);margin-right:8px;vertical-align:2px}
+  .strow .meta{font-size:10.5px;color:var(--ink3);margin-top:3px;font-family:var(--m)}
+  .strow .pts{font-family:var(--serif);font-size:23px;font-weight:700;letter-spacing:-.8px;
+    font-variant-numeric:tabular-nums}
+  .strow .dlt{font-family:var(--m);font-size:10.5px;color:var(--ink3);text-align:right;
+    min-width:62px;flex:0 0 62px}
+  .strow.first .pts{font-size:28px;color:var(--red)}
+
+  /* ---------- kpis como cintillo ---------- */
+  .strip{display:grid;grid-template-columns:repeat(2,1fr);margin-top:26px;
+    border-top:3px double var(--ink);border-bottom:1px solid var(--rule)}
+  .cell{padding:14px 6px;border-right:1px solid var(--rule2);text-align:center}
+  .cell:nth-child(2n){border-right:none}
+  .cell:nth-child(-n+2){border-bottom:1px solid var(--rule2)}
+  .cell .l{font-size:8px;letter-spacing:1.8px;color:var(--ink3);text-transform:uppercase;font-weight:800}
+  .cell .v{font-family:var(--serif);font-size:22px;font-weight:700;margin-top:6px;letter-spacing:-.6px}
+  .cell .s{font-size:10px;color:var(--ink2);margin-top:3px;font-family:var(--m)}
+
+  /* ---------- secciones ---------- */
+  .sec{margin-top:32px}
+  .sh{display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:3px double var(--ink);padding-bottom:8px;margin-bottom:2px}
+  .sh h3{font-family:var(--serif);font-size:17px;font-weight:400;margin:0;letter-spacing:-.2px}
+  .sh h3 i{color:var(--red);font-style:normal}
+  .sh span{font-size:9.5px;color:var(--ink3);font-family:var(--m);letter-spacing:.5px}
+
+  /* ---------- grafica ---------- */
+  .plot{padding:18px 0 4px}
+  .plot svg{display:block;width:100%;height:auto;overflow:visible}
+  .lg{display:flex;gap:18px;justify-content:center;padding:10px 0 0;flex-wrap:wrap}
+  .lg div{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink2);
+    font-family:var(--serif)}
+  .lg i{width:14px;height:2px;background:var(--c);display:block}
+
+  /* ---------- semanas ---------- */
+  .wk{margin-top:20px}
+  .wkh{display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:1px solid var(--rule);padding-bottom:7px}
+  .wkh b{font-family:var(--serif);font-size:15px;font-weight:400}
+  .wkh b i{color:var(--red);font-style:normal;font-weight:700}
+  .wkh span{font-size:10px;color:var(--ink3);font-family:var(--m)}
+  .ts{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-family:var(--m);font-size:11.5px}
+  th{font-size:8px;letter-spacing:.5px;color:var(--ink3);text-transform:uppercase;
+    font-weight:800;padding:9px 6px;text-align:right;border-bottom:1px solid var(--rule)}
+  td{padding:10px 6px;text-align:right;border-bottom:1px solid var(--rule2);white-space:nowrap;
+    font-variant-numeric:tabular-nums}
+  td.nm{text-align:left;font-family:var(--serif);font-size:13.5px;padding-left:2px}
+  td.miss{color:#cdc3b6}
+  td.tot{font-weight:700;font-family:var(--serif);font-size:13px}
+
+  /* ---------- form ---------- */
+  .form{border-top:1px solid var(--rule);padding-top:16px}
+  .fr{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .fr.one{grid-template-columns:1fr}
+  label{display:block;font-size:8px;letter-spacing:1.8px;color:var(--ink3);
+    text-transform:uppercase;font-weight:800;margin-bottom:5px}
+  input,select{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--ink);
+    color:var(--ink);font-family:var(--serif);font-size:18px;padding:7px 0;outline:none;
+    border-radius:0;appearance:none;-webkit-appearance:none}
+  select{background-image:linear-gradient(45deg,transparent 50%,var(--ink2) 50%),
+    linear-gradient(135deg,var(--ink2) 50%,transparent 50%);
+    background-position:calc(100% - 8px) 16px,calc(100% - 3px) 16px;
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  input:focus,select:focus{border-bottom-color:var(--red)}
+  .btn{width:100%;border:none;border-radius:0;padding:15px;font-size:11px;letter-spacing:2.4px;
+    text-transform:uppercase;font-weight:800;font-family:inherit;color:var(--paper);
+    background:var(--ink);margin-top:8px}
+  .btn:active{opacity:.86}
+  .btn.gh{background:transparent;border:1.5px solid var(--rule);color:var(--ink2);
+    border-top:none;margin-top:2px}
+
+  #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);
+    transform:translate(-50%,-170%);opacity:0;visibility:hidden;pointer-events:none;
+    background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:14px;
+    padding:12px 22px;border-radius:3px;z-index:60;max-width:88vw;text-align:center;
+    transition:transform .26s,opacity .26s,visibility .26s}
+  #toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
+
+  .foot{padding:30px 0 10px;text-align:center;color:var(--ink3);font-size:10px;
+    font-family:var(--m);line-height:2}
+  .foot .rule-d{margin:0 0 14px}
+  .sync{display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px;font-family:var(--m);font-size:10.5px;color:var(--ink2)}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--p2);animation:pl 2s infinite}
+  @keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
+  @media(min-width:600px){ .strip{grid-template-columns:repeat(4,1fr)} .cell{border-bottom:none!important;border-right:1px solid var(--rule2)!important} .cell:last-child{border-right:none!important} }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="kicker">Campeonato · Temporada 2026</div>
+  <div class="rule-d"></div>
+  <h1 class="title">Geo <em>Pros</em><br>Championship</h1>
+  <div class="sub" id="monthLbl">—</div>
+  <div class="rule-d b"></div>
+</div>
+
+<div class="wrap">
+
+  <div class="lead">
+    <div class="cap" id="leadCap">Clasificación del mes</div>
+    <h2 id="leadTitle">—</h2>
+    <p id="leadSub">—</p>
+  </div>
+
+  <div class="stand" id="stand"></div>
+
+  <div class="strip" id="kpis"></div>
+
+  <div class="sec">
+    <div class="sh"><h3>El <i>gráfico</i></h3><span id="chartNote">puntos acumulados</span></div>
+    <div class="plot">
+      <svg id="chart" viewBox="0 0 620 200" preserveAspectRatio="none" role="img" aria-label="Evolución"></svg>
+      <div class="lg" id="legend"></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><h3>Semana a <i>semana</i></h3><span id="wkCount">—</span></div>
+    <div id="weeks"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><h3>Anotar <i>puntaje</i></h3><span id="syncTxt">conectando…</span></div>
+    <div class="form" style="margin-top:18px">
+      <div class="fr">
+        <div><label>Jugador</label><select id="fPlayer"></select></div>
+        <div><label>Fecha</label><input id="fDate" type="date"></div>
+      </div>
+      <div class="fr one">
+        <div><label>Puntos · máximo 25.000</label>
+          <input id="fScore" type="text" inputmode="numeric" placeholder="19742" autocomplete="off"></div>
+      </div>
+      <button class="btn" id="saveBtn">Guardar puntaje</button>
+      <button class="btn gh" id="delBtn">Borrar ese día</button>
+    </div>
+  </div>
+
+  <div class="sync"><i class="dot"></i><span id="updTxt">—</span></div>
+
+  <div class="foot">
+    <div class="rule-d"></div>
+    Geo Pros Championship · Pame · Ari · Gerry<br>
+    Registro diario · Datos sincronizados en la nube
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ===== CONFIG ===== */
+const RTDB  = 'https://plan-gym-8aff7-default-rtdb.firebaseio.com';
+const CLOUD = 'geopros';
+const LSKEY = 'geoProsV1';
+const MES_INICIO = '2026-09-02';
+const MES_FIN    = '2026-09-30';
+
+const PLAYERS = [
+  { id:'pame',  nombre:'Pame',  ini:'PA', color:'#1d4ed8' },
+  { id:'ari',   nombre:'Ari',   ini:'AR', color:'#166534' },
+  { id:'gerry', nombre:'Gerry', ini:'GE', color:'#b45309' }
+];
+
+const SEED = {
+  '2026-09-02': { pame:19026, ari:21110, gerry:22362 },
+  '2026-09-03': { pame:14598, ari:13854, gerry: 9358 },
+  '2026-09-04': { pame:19670, ari:17994, gerry:19336 },
+  '2026-09-05': { pame:23665, ari:19551, gerry:19433 },
+  '2026-09-06': { pame:17686, ari:19819, gerry:17170 },
+  '2026-09-07': { pame:18296, ari:20459, gerry:17900 },
+  '2026-09-08': { pame:14526, ari:14537, gerry:10766 },
+  '2026-09-09': { pame:22602, ari:21473, gerry:22043 }
+};
+
+const DAYS_ES = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio',
+               'agosto','septiembre','octubre','noviembre','diciembre'];
+
+const $ = id => document.getElementById(id);
+const fmt = n => (n===null||n===undefined||isNaN(n)) ? '—' : Math.round(n).toLocaleString('en-US');
+const iso = d => d.toISOString().slice(0,10);
+const parseISO = s => { const p = String(s).split('-'); return new Date(+p[0], +p[1]-1, +p[2]); };
+function isoWeekKey(dateStr){
+  const d = parseISO(dateStr);
+  const dow = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - dow);
+  return iso(d);
+}
+function showToast(msg, ok){
+  const t = $('toast');
+  t.textContent = msg;
+  t.style.background = ok === false ? '#b8352c' : '#1a1613';
+  t.classList.add('on');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('on'), 3200);
+}
+function horaAhora(){
+  const d = new Date(), p = n => String(n).padStart(2,'0');
+  return p(d.getHours()) + ':' + p(d.getMinutes());
+}
+function fmtFechaCorta(f){
+  const d = parseISO(f);
+  return d.getDate() + ' ' + MESES[d.getMonth()].slice(0,3);
+}
+function fmtFechaLarga(f){
+  const d = parseISO(f);
+  return d.getDate() + ' de ' + MESES[d.getMonth()];
+}
+
+/* ===== ESTADO / NUBE ===== */
+let DATA = {};
+function seedIfEmpty(remote){
+  if (remote && Object.keys(remote).length) return remote;
+  let seeded = '';
+  try { seeded = localStorage.getItem(LSKEY + '_seeded') || ''; } catch(e){}
+  if (seeded === '1') return remote || {};
+  try { localStorage.setItem(LSKEY + '_seeded','1'); } catch(e){}
+  saveRemote(SEED);
+  return JSON.parse(JSON.stringify(SEED));
+}
+let saveTimer = null;
+function saveRemote(obj){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    fetch(RTDB + '/' + CLOUD + '/scores.json', {
+      method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(obj)
+    })
+    .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); })
+    .then(() => { $('syncTxt').textContent = 'guardado ' + horaAhora(); $('updTxt').textContent = 'sincronizado a las ' + horaAhora(); })
+    .catch(() => { $('syncTxt').textContent = 'sin conexión (local)'; });
+  }, 600);
+}
+function loadCloud(){
+  $('syncTxt').textContent = 'conectando…';
+  fetch(RTDB + '/' + CLOUD + '/scores.json')
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+    .then(remote => {
+      DATA = seedIfEmpty(remote) || {};
+      $('syncTxt').textContent = 'en vivo';
+      $('updTxt').textContent = 'sincronizado a las ' + horaAhora();
+      renderAll();
+    })
+    .catch(() => {
+      let local = null;
+      try { local = JSON.parse(localStorage.getItem(LSKEY) || 'null'); } catch(e){}
+      DATA = local || JSON.parse(JSON.stringify(SEED));
+      $('syncTxt').textContent = 'modo local';
+      renderAll();
+    });
+}
+
+/* ===== CALCULOS ===== */
+function fechasDelMes(){
+  const out = [], d = parseISO(MES_INICIO), fin = parseISO(MES_FIN);
+  while (d <= fin){ out.push(iso(d)); d.setDate(d.getDate()+1); }
+  return out;
+}
+const totalJugador = (pid, fs) => fs.reduce((s,f) => s + ((DATA[f] && DATA[f][pid]) || 0), 0);
+const jugadosJugador = (pid, fs) => fs.filter(f => DATA[f] && DATA[f][pid]).length;
+function mejorJugador(pid, fs){
+  let b = 0;
+  fs.forEach(f => { const v = DATA[f] && DATA[f][pid]; if (v > b) b = v; });
+  return b || null;
+}
+function promedioJugador(pid, fs){
+  const n = jugadosJugador(pid, fs);
+  return n ? totalJugador(pid, fs) / n : null;
+}
+function rachaMax(pid, fs){
+  const j = fs.filter(f => DATA[f] && DATA[f][pid]);
+  if (!j.length) return 0;
+  let best = 1, cur = 1;
+  for (let i=1;i<j.length;i++){
+    const diff = Math.round((parseISO(j[i]) - parseISO(j[i-1])) / 86400000);
+    cur = diff === 1 ? cur + 1 : 1;
+    if (cur > best) best = cur;
+  }
+  return best;
+}
+function ranking(fs){
+  return PLAYERS.map(p => ({
+    ...p,
+    total: totalJugador(p.id, fs),
+    dias:  jugadosJugador(p.id, fs),
+    mejor: mejorJugador(p.id, fs),
+    prom:  promedioJugador(p.id, fs),
+    racha: rachaMax(p.id, fs)
+  })).sort((a,b) => b.total - a.total);
+}
+
+/* ===== RENDER ===== */
+function renderAll(){
+  const fs = fechasDelMes();
+  const rk = ranking(fs);
+  const lider = rk[0] ? rk[0].total : 0;
+  const ini = parseISO(MES_INICIO);
+  const mesTxt = MESES[ini.getMonth()].charAt(0).toUpperCase() + MESES[ini.getMonth()].slice(1);
+
+  $('monthLbl').textContent = mesTxt + ' ' + ini.getFullYear() + ' · Mes 1';
+  const conDatos = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
+  $('kpis').dataset.dias = conDatos + ' de ' + fs.length + ' días';
+
+  renderLead(rk, lider, conDatos, fs.length);
+  renderStand(rk, lider);
+  renderKpis(rk, fs);
+  renderChart(fs);
+  renderWeeks(fs);
+  renderPlayerSelect();
+}
+
+function renderLead(rk, lider, conDatos, totalDias){
+  if (!rk[0]) { $('leadTitle').textContent = 'Aún sin datos'; return; }
+  const a = rk[0], b = rk[1];
+  const dif = b ? lider - b.total : 0;
+
+  $('leadCap').textContent = conDatos + ' de ' + totalDias + ' días jugados';
+  $('leadTitle').innerHTML = '<b>' + a.nombre.toUpperCase() + '</b> manda con ' +
+    fmt(a.total) + ' puntos';
+
+  // quien sube: mejor promedio
+  const porProm = rk.slice().sort((x,y) => (y.prom||0) - (x.prom||0));
+  const bestProm = porProm[0];
+
+  let txt = b ? ('Le saca ' + fmt(dif) + ' a ' + b.nombre + '. ') : '';
+  if (bestProm && bestProm.id !== a.id) {
+    txt += bestProm.nombre + ' es quien mejor promedio lleva: ' + fmt(bestProm.prom) + ' por partida.';
+  } else if (bestProm) {
+    txt += 'Además, ' + bestProm.nombre + ' tiene el mejor promedio: ' + fmt(bestProm.prom) + ' por partida.';
+  }
+  $('leadSub').textContent = txt;
+}
+
+function renderStand(rk, lider){
+  $('stand').innerHTML = rk.map((p,i) => {
+    const d = i === 0 ? 'líder' : '−' + fmt(lider - p.total);
+    return '<div class="strow' + (i===0 ? ' first' : '') + '" style="--c:' + p.color + '">' +
+      '<div class="n">' + (i+1) + '</div>' +
+      '<div class="info"><div class="who"><i></i>' + p.nombre + '</div>' +
+        '<div class="meta">' + p.dias + ' días · prom ' + fmt(p.prom) + ' · máx ' + fmt(p.mejor) + '</div></div>' +
+      '<div class="pts">' + fmt(p.total) + '</div>' +
+      '<div class="dlt">' + d + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderKpis(rk, fs){
+  let mejor = 0, quien = '—', fecha = '';
+  const porDia = {};
+  fs.forEach(f => {
+    if (!DATA[f]) return;
+    porDia[f] = Object.keys(DATA[f]).reduce((s,k) => s + (DATA[f][k]||0), 0);
+    PLAYERS.forEach(p => {
+      const v = DATA[f][p.id];
+      if (v && v > mejor){ mejor = v; quien = p.nombre; fecha = f; }
+    });
+  });
+  const n = Object.keys(porDia).length || 1;
+  const prom = Object.values(porDia).reduce((s,v)=>s+v,0) / n;
+  const racha = Math.max.apply(null, rk.map(p => p.racha).concat([0]));
+  const jugados = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
+
+  const c = (l,v,s) => '<div class="cell"><div class="l">' + l + '</div>' +
+    '<div class="v">' + v + '</div><div class="s">' + s + '</div></div>';
+
+  $('kpis').innerHTML =
+    c('Puntaje récord', fmt(mejor || null), quien + (fecha ? ' · ' + fmtFechaCorta(fecha) : '')) +
+    c('Promedio diario', fmt(prom), 'los tres juntos') +
+    c('Días jugados', jugados, 'de ' + fs.length + ' del mes') +
+    c('Mejor racha', racha, 'días seguidos');
+}
+
+function renderChart(fs){
+  const svg = $('chart');
+  const W = 620, H = 200, PL = 42, PR = 14, PT = 12, PB = 26;
+  const act = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length);
+  if (act.length < 2){
+    svg.innerHTML = '<text x="310" y="100" fill="#a2988c" font-size="12" text-anchor="middle" ' +
+      'font-family="Georgia,serif" font-style="italic">Faltan días para dibujar el gráfico</text>';
+    $('legend').innerHTML = '';
+    return;
+  }
+  const series = {}, run = {};
+  PLAYERS.forEach(p => { series[p.id] = []; run[p.id] = 0; });
+  act.forEach(f => PLAYERS.forEach(p => {
+    run[p.id] += (DATA[f] && DATA[f][p.id]) || 0;
+    series[p.id].push(run[p.id]);
+  }));
+  const maxV = Math.max.apply(null, PLAYERS.map(p => series[p.id][series[p.id].length-1]).concat([1]));
+  const stepX = (W - PL - PR) / Math.max(1, act.length - 1);
+  const yOf = v => PT + (H - PT - PB) * (1 - v / (maxV * 1.10));
+  const xOf = i => PL + stepX * i;
+
+  let g = '';
+  for (let i=0;i<=4;i++){
+    const y = yOf(maxV * 1.10 * i/4);
+    g += '<line x1="'+PL+'" y1="'+y.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+y.toFixed(1)+
+         '" stroke="#e6ded1" stroke-width="1"/>' +
+         '<text x="'+(PL-7)+'" y="'+(y+3.5).toFixed(1)+'" fill="#a2988c" font-size="9" ' +
+         'text-anchor="end" font-family="Georgia,serif">'+Math.round(maxV*1.10*i/4/1000)+'k</text>';
+  }
+  act.forEach((f,i) => {
+    if (act.length > 8 && i % 2) return;
+    g += '<text x="'+xOf(i).toFixed(1)+'" y="'+(H-8)+'" fill="#a2988c" font-size="9" ' +
+         'text-anchor="middle" font-family="Georgia,serif">'+parseISO(f).getDate()+'</text>';
+  });
+  PLAYERS.forEach(p => {
+    const pts = series[p.id].map((v,i) => xOf(i).toFixed(1)+','+yOf(v).toFixed(1)).join(' ');
+    g += '<polyline points="'+pts+'" fill="none" stroke="'+p.color+
+         '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
+    const li = series[p.id].length - 1;
+    g += '<circle cx="'+xOf(li).toFixed(1)+'" cy="'+yOf(series[p.id][li]).toFixed(1)+
+         '" r="3.6" fill="'+p.color+'"/>';
+  });
+  svg.innerHTML = g;
+  $('legend').innerHTML = PLAYERS.map(p =>
+    '<div style="--c:'+p.color+'"><i></i>'+p.nombre+'</div>').join('');
+}
+
+function renderWeeks(fs){
+  const groups = {};
+  fs.forEach(f => {
+    const k = isoWeekKey(f);
+    (groups[k] = groups[k] || []).push(f);
+  });
+  const keys = Object.keys(groups).sort();
+  $('wkCount').textContent = keys.length + ' semanas';
+
+  $('weeks').innerHTML = keys.map((k, wi) => {
+    const dias = groups[k];
+    const cols = dias.map(f => {
+      const d = parseISO(f);
+      return { f:f, lbl: DAYS_ES[(d.getDay()+6)%7], n:d.getDate() };
+    });
+    const th = '<tr><th style="text-align:left">Sem ' + (wi+1) + '</th>' +
+      cols.map(c => '<th>' + c.lbl.slice(0,1) + c.n + '</th>').join('') +
+      '<th>Total</th><th>#</th></tr>';
+
+    const tot = PLAYERS.map(p => {
+      let t = 0;
+      dias.forEach(f => { const v = DATA[f] && DATA[f][p.id]; if (v) t += v; });
+      return { p, total:t };
+    }).sort((a,b) => b.total - a.total);
+
+    const rows = tot.map((t, i) => {
+      const tds = cols.map(c => {
+        const v = DATA[c.f] && DATA[c.f][t.p.id];
+        return v ? '<td>' + fmt(v) + '</td>' : '<td class="miss">–</td>';
+      }).join('');
+      return '<tr><td class="nm" style="color:' + t.p.color + '">' + t.p.nombre + '</td>' +
+        tds + '<td class="tot">' + fmt(t.total) + '</td>' +
+        '<td' + (i===0 ? ' style="font-weight:700"' : '') + '>' + (i+1) + '</td></tr>';
+    }).join('');
+
+    return '<div class="wk"><div class="wkh"><b>Semana <i>' + (wi+1) + '</i></b><span>' +
+      fmtFechaCorta(dias[0]) + ' – ' + fmtFechaCorta(dias[dias.length-1]) + '</span></div>' +
+      '<div class="ts"><table><thead>' + th + '</thead><tbody>' + rows + '</tbody></table></div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderPlayerSelect(){
+  const sel = $('fPlayer');
+  if (sel.options.length) return;
+  sel.innerHTML = PLAYERS.map(p => '<option value="' + p.id + '">' + p.nombre + '</option>').join('');
+  $('fDate').value = iso(new Date());
+}
+
+/* ===== ACCIONES ===== */
+function commit(){
+  try { localStorage.setItem(LSKEY, JSON.stringify(DATA)); } catch(e){}
+  saveRemote(DATA);
+  renderAll();
+}
+$('saveBtn').onclick = () => {
+  const pid = $('fPlayer').value, f = $('fDate').value;
+  const raw = $('fScore').value.replace(/[^0-9]/g,''), v = parseInt(raw, 10);
+  if (!f) return showToast('Falta la fecha', false);
+  if (!raw || isNaN(v)) return showToast('Escribe los puntos', false);
+  if (v < 0 || v > 25000) return showToast('Los puntos van de 0 a 25.000', false);
+  if (!DATA[f]) DATA[f] = {};
+  const antes = DATA[f][pid];
+  DATA[f][pid] = v;
+  commit();
+  const p = PLAYERS.find(x => x.id === pid);
+  if (antes && v > antes) showToast(p.nombre + ': ' + fmt(v) + ' — ¡récord mejorado!');
+  else showToast(p.nombre + ' · ' + fmt(v) + ' guardado');
+  $('fScore').value = '';
+};
+$('delBtn').onclick = () => {
+  const pid = $('fPlayer').value, f = $('fDate').value;
+  if (!f || !DATA[f] || !DATA[f][pid]) return showToast('No hay puntaje ese día', false);
+  delete DATA[f][pid];
+  if (!Object.keys(DATA[f]).length) delete DATA[f];
+  commit();
+  showToast('Borrado');
+};
+$('fDate').addEventListener('change', () => {
+  const v = DATA[$('fDate').value] && DATA[$('fDate').value][$('fPlayer').value];
+  $('fScore').value = v ? String(v) : '';
+});
+
+/* ===== ARRANQUE ===== */
+try {
+  const c = JSON.parse(localStorage.getItem(LSKEY) || 'null');
+  DATA = c || JSON.parse(JSON.stringify(SEED));
+} catch(e){ DATA = JSON.parse(JSON.stringify(SEED)); }
+renderAll();
+loadCloud();
+</script>
+</body>
+</html>
