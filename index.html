@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#faf7f2">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Geo Pros Championship</title>
 <style>
   :root{
@@ -259,6 +262,7 @@ const CLOUD = 'geopros';
 const LSKEY = 'geoProsV1';
 const MES_INICIO = '2026-09-02';
 const MES_FIN    = '2026-09-30';
+const BUILD      = 'b8';        // SUBIR ESTO en cada deploy -> la app se auto-actualiza sola
 
 const PLAYERS = [
   { id:'pame',  nombre:'Pame',  ini:'PA', color:'#1d4ed8' },
@@ -314,6 +318,7 @@ function fmtFechaLarga(f){
 
 /* ===== ESTADO / NUBE ===== */
 let DATA = {};
+let guardando = false;
 function seedIfEmpty(remote){
   if (remote && Object.keys(remote).length) return remote;
   let seeded = '';
@@ -686,9 +691,11 @@ function setMsg(txt, cls){
 
 /* ===== ACCIONES ===== */
 function commit(){
+  guardando = true;
   try { localStorage.setItem(LSKEY, JSON.stringify(DATA)); } catch(e){}
   saveRemote(DATA);
   renderAll();
+  setTimeout(() => { guardando = false; }, 3000);
 }
 $('saveBtn').onclick = () => {
   const pid = selPlayer, f = $('fDate').value;
@@ -722,6 +729,49 @@ try {
 } catch(e){ DATA = JSON.parse(JSON.stringify(SEED)); }
 renderAll();
 loadCloud();
+
+/* ===== REFRESCO AUTOMATICO DE DATOS ===== */
+function refrescarDatos(){
+  if (document.hidden || guardando) return;
+  const ae = document.activeElement;
+  if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'SELECT')) return;
+  fetch(RTDB + '/' + CLOUD + '/scores.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(remote => {
+      if (!remote) return;
+      if (JSON.stringify(remote) !== JSON.stringify(DATA)){
+        DATA = remote;
+        renderAll();
+        $('updTxt').textContent = 'actualizado ' + horaAhora();
+      }
+    })
+    .catch(() => {});
+}
+setInterval(refrescarDatos, 45000);
+
+/* ===== AUTO-ACTUALIZACION DE LA APP =====
+   Soluciona el cache de Safari en iOS: si el BUILD servido ya no es el
+   que esta corriendo, recarga sola con un parametro nuevo. */
+function vigilarVersion(){
+  let ya = '';
+  try { ya = sessionStorage.getItem('gp_reload') || ''; } catch(e){}
+  if (ya === BUILD) return;
+  fetch('?_=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.text() : null)
+    .then(function(t){
+      if (!t) return;
+      const m = t.match(/const BUILD\s*=\s*'([^']+)'/);
+      if (m && m[1] !== BUILD){
+        try { sessionStorage.setItem('gp_reload', m[1]); } catch(e){}
+        location.replace(location.pathname + '?v=' + Date.now());
+      }
+    })
+    .catch(function(){});
+}
+vigilarVersion();
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden){ refrescarDatos(); vigilarVersion(); }
+});
 </script>
 </body>
 </html>
