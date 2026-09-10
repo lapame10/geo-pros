@@ -188,7 +188,6 @@
   </div>
 
   <div class="lead">
-    <div class="cap" id="leadCap">Clasificación del mes</div>
     <h2 id="leadTitle">—</h2>
     <p id="leadSub">—</p>
   </div>
@@ -372,10 +371,8 @@ function renderAll(){
   const mesTxt = MESES[ini.getMonth()].charAt(0).toUpperCase() + MESES[ini.getMonth()].slice(1);
 
   $('monthLbl').textContent = mesTxt + ' ' + ini.getFullYear() + ' · Mes 1';
-  const conDatos = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
-  $('kpis').dataset.dias = conDatos + ' de ' + fs.length + ' días';
 
-  renderLead(rk, lider, conDatos, fs.length);
+  renderLead(rk, lider);
   renderStand(rk, lider);
   renderKpis(rk, fs);
   renderChart(fs);
@@ -383,12 +380,11 @@ function renderAll(){
   renderPlayerSelect();
 }
 
-function renderLead(rk, lider, conDatos, totalDias){
+function renderLead(rk, lider){
   if (!rk[0]) { $('leadTitle').textContent = 'Aún sin datos'; return; }
   const a = rk[0], b = rk[1];
   const dif = b ? lider - b.total : 0;
 
-  $('leadCap').textContent = conDatos + ' de ' + totalDias + ' días jugados';
   $('leadTitle').innerHTML = '<b>' + a.nombre.toUpperCase() + '</b> manda con ' +
     fmt(a.total) + ' puntos';
 
@@ -440,7 +436,7 @@ function renderKpis(rk, fs){
   $('kpis').innerHTML =
     c('Puntaje récord', fmt(mejor || null), quien + (fecha ? ' · ' + fmtFechaCorta(fecha) : '')) +
     c('Promedio diario', fmt(prom), 'los tres juntos') +
-    c('Días jugados', jugados, 'de ' + fs.length + ' del mes') +
+    c('Días anotados', jugados, 'entre los tres') +
     c('Mejor racha', racha, 'días seguidos');
 }
 
