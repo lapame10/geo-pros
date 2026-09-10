@@ -143,6 +143,29 @@
   #delBtn{background:none;border:none;color:var(--ink3);font-size:8.5px;letter-spacing:1.2px;
     text-transform:uppercase;font-weight:800;font-family:inherit;padding:4px 0;white-space:nowrap}
 
+  /* ---------- la apuesta: cafe y tacos ---------- */
+  .bets{display:grid;gap:11px;margin-top:22px}
+  .bet{border:1px solid var(--rule);border-radius:4px;background:#fff;overflow:hidden}
+  .bhead{background:var(--ink);color:var(--paper);padding:9px 13px;display:flex;
+    justify-content:space-between;align-items:baseline;gap:10px}
+  .bhead b{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:800}
+  .bhead span{font-size:9.5px;font-family:var(--m);opacity:.72}
+  .brow{display:flex;align-items:center;gap:11px;padding:12px 13px;
+    border-bottom:1px solid var(--rule2)}
+  .brow:last-child{border-bottom:none}
+  .tag{font-size:7.5px;letter-spacing:1.1px;text-transform:uppercase;font-weight:800;
+    padding:5px 8px;border-radius:2px;white-space:nowrap;min-width:88px;text-align:center}
+  .brow.win .tag{background:#e6f3ea;color:#14603a}
+  .brow.lose .tag{background:#fbe8e5;color:#a82c23}
+  .brow b{font-family:var(--serif);font-size:17px;font-weight:700;flex:1;letter-spacing:-.3px}
+  .brow.lose b{color:#a82c23}
+  .brow i{font-family:var(--m);font-size:13px;font-style:normal;font-weight:700;
+    font-variant-numeric:tabular-nums;color:var(--ink2)}
+  .wkpay{padding:9px 13px;border-top:1px solid var(--rule2);background:var(--paper2);
+    font-size:10.5px;color:var(--ink2);font-family:var(--m);display:flex;
+    justify-content:space-between;gap:10px}
+  .wkpay b{font-family:var(--serif);font-size:12.5px;color:#a82c23;font-weight:700}
+
   #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);
     transform:translate(-50%,-170%);opacity:0;visibility:hidden;pointer-events:none;
     background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:14px;
@@ -186,6 +209,8 @@
       <button id="delBtn">Borrar ese día</button>
     </div>
   </div>
+
+  <div class="bets" id="bets"></div>
 
   <div class="lead">
     <h2 id="leadTitle">—</h2>
@@ -362,6 +387,35 @@ function ranking(fs){
   })).sort((a,b) => b.total - a.total);
 }
 
+/* ===== LA APUESTA ===== */
+function semanasDe(fs){
+  const map = {}, out = [];
+  fs.forEach(f => {
+    const k = isoWeekKey(f);
+    if (!map[k]){ map[k] = []; out.push({ key:k, dias:map[k] }); }
+    map[k].push(f);
+  });
+  return out;
+}
+function totalesEn(dias){
+  return PLAYERS.map(p => {
+    let t = 0;
+    dias.forEach(f => { const v = DATA[f] && DATA[f][p.id]; if (v) t += v; });
+    return { p, total:t };
+  }).sort((a,b) => b.total - a.total);
+}
+function diasJugadosEn(dias){
+  return dias.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
+}
+function semanaActual(fs){
+  const hoy = iso(new Date());
+  const con = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length);
+  let ref = (hoy >= MES_INICIO && hoy <= MES_FIN) ? hoy
+          : (con.length ? con[con.length-1] : fs[fs.length-1]);
+  const k = isoWeekKey(ref);
+  return fs.filter(f => isoWeekKey(f) === k);
+}
+
 /* ===== RENDER ===== */
 function renderAll(){
   const fs = fechasDelMes();
@@ -373,6 +427,7 @@ function renderAll(){
   $('monthLbl').textContent = mesTxt + ' ' + ini.getFullYear() + ' · Mes 1';
 
   renderLead(rk, lider);
+  renderBets(fs);
   renderStand(rk, lider);
   renderKpis(rk, fs);
   renderChart(fs);
@@ -399,6 +454,42 @@ function renderLead(rk, lider){
     txt += 'Además, ' + bestProm.nombre + ' tiene el mejor promedio: ' + fmt(bestProm.prom) + ' por partida.';
   }
   $('leadSub').textContent = txt;
+}
+
+/* --- quien va ganando y quien paga (cafe / tacos) --- */
+function renderBets(fs){
+  const sems = semanasDe(fs);
+  const ds = semanaActual(fs);
+  let idxSem = 1;
+  const kAct = ds.length ? isoWeekKey(ds[0]) : '';
+  for (let i = 0; i < sems.length; i++) if (sems[i].key === kAct) idxSem = i + 1;
+
+  const ts = totalesEn(ds), tm = totalesEn(fs);
+  const jSem = diasJugadosEn(ds), jMes = diasJugadosEn(fs);
+
+  const card = (titulo, rango, arr, castigo, jugados, totalDias) => {
+    if (!jugados || !arr.length){
+      return '<div class="bet"><div class="bhead"><b>' + titulo + '</b><span>' + rango +
+        '</span></div><div class="brow"><span class="tag" style="background:#f0ece5;color:#6d645c">' +
+        'Sin datos aún</span><b style="color:#a2988c">—</b><i>—</i></div></div>';
+    }
+    const gana = arr[0], paga = arr[arr.length - 1];
+    const cerrado = jugados >= totalDias;
+    return '<div class="bet"><div class="bhead"><b>' + titulo + '</b><span>' + rango + '</span></div>' +
+      '<div class="brow win"><span class="tag">' + (cerrado ? 'Ganó' : 'Va ganando') + '</span>' +
+        '<b>' + gana.p.nombre + '</b><i>' + fmt(gana.total) + '</i></div>' +
+      '<div class="brow lose"><span class="tag">Paga ' + castigo + '</span>' +
+        '<b>' + paga.p.nombre + '</b><i>' + fmt(paga.total) + '</i></div></div>';
+  };
+
+  const rangoSem = ds.length ? fmtFechaCorta(ds[0]) + ' – ' + fmtFechaCorta(ds[ds.length - 1]) : '—';
+  const d0 = parseISO(MES_INICIO);
+  const rangoMes = MESES[d0.getMonth()].charAt(0).toUpperCase() +
+    MESES[d0.getMonth()].slice(1) + ' ' + d0.getFullYear();
+
+  $('bets').innerHTML =
+    card('Semana ' + idxSem, rangoSem, ts, 'el café', jSem, ds.length) +
+    card('El mes', rangoMes, tm, 'los tacos', jMes, fs.length);
 }
 
 function renderStand(rk, lider){
@@ -488,16 +579,13 @@ function renderChart(fs){
 }
 
 function renderWeeks(fs){
-  const groups = {};
-  fs.forEach(f => {
-    const k = isoWeekKey(f);
-    (groups[k] = groups[k] || []).push(f);
-  });
-  const keys = Object.keys(groups).sort();
-  $('wkCount').textContent = keys.length + ' semanas';
+  const sems = semanasDe(fs);
+  const dsAct = semanaActual(fs);
+  const kAct = dsAct.length ? isoWeekKey(dsAct[0]) : '';
+  $('wkCount').textContent = sems.length + ' semanas';
 
-  $('weeks').innerHTML = keys.map((k, wi) => {
-    const dias = groups[k];
+  $('weeks').innerHTML = sems.map((s, wi) => {
+    const dias = s.dias;
     const cols = dias.map(f => {
       const d = parseISO(f);
       return { f:f, lbl: DAYS_ES[(d.getDay()+6)%7], n:d.getDate() };
@@ -506,11 +594,7 @@ function renderWeeks(fs){
       cols.map(c => '<th>' + c.lbl.slice(0,1) + c.n + '</th>').join('') +
       '<th>Total</th><th>#</th></tr>';
 
-    const tot = PLAYERS.map(p => {
-      let t = 0;
-      dias.forEach(f => { const v = DATA[f] && DATA[f][p.id]; if (v) t += v; });
-      return { p, total:t };
-    }).sort((a,b) => b.total - a.total);
+    const tot = totalesEn(dias);
 
     const rows = tot.map((t, i) => {
       const tds = cols.map(c => {
@@ -522,9 +606,20 @@ function renderWeeks(fs){
         '<td' + (i===0 ? ' style="font-weight:700"' : '') + '>' + (i+1) + '</td></tr>';
     }).join('');
 
+    const jug = diasJugadosEn(dias);
+    const esActual = (s.key === kAct);
+    let pie = '';
+    if (jug && tot.length > 1){
+      pie = '<div class="wkpay"><span>' + (esActual ? 'Paga el café' : 'Pagó el café') +
+        '</span><b>' + tot[tot.length-1].p.nombre + '</b></div>';
+    } else if (!jug){
+      pie = '<div class="wkpay"><span>Sin jugar todavía</span><b style="color:#a2988c">—</b></div>';
+    }
+
     return '<div class="wk"><div class="wkh"><b>Semana <i>' + (wi+1) + '</i></b><span>' +
       fmtFechaCorta(dias[0]) + ' – ' + fmtFechaCorta(dias[dias.length-1]) + '</span></div>' +
       '<div class="ts"><table><thead>' + th + '</thead><tbody>' + rows + '</tbody></table></div>' +
+      pie +
     '</div>';
   }).join('');
 }
