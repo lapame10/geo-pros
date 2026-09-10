@@ -121,6 +121,28 @@
   .btn.gh{background:transparent;border:1.5px solid var(--rule);color:var(--ink2);
     border-top:none;margin-top:2px}
 
+  /* ---------- bloque rapido de anotar ---------- */
+  .quick{margin-top:20px;border:2px solid var(--ink);border-radius:4px;background:#fff;padding:14px}
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;gap:8px}
+  .qhead b{font-size:9px;letter-spacing:2.4px;text-transform:uppercase;font-weight:800;font-style:normal}
+  .qhead span{font-size:9.5px;color:var(--ink3);font-family:var(--m)}
+  .qwho{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:11px}
+  .qbtn{border:1.5px solid var(--rule);background:var(--paper);border-radius:3px;padding:13px 4px;
+    font-family:var(--serif);font-size:15.5px;color:var(--ink2);font-weight:400;letter-spacing:-.2px}
+  .qbtn.on{background:var(--c);border-color:var(--c);color:#fff;font-weight:700}
+  .qrow{display:flex;gap:7px;align-items:stretch}
+  .qrow .d{flex:0 0 122px}
+  .qrow .s{flex:1;min-width:0}
+  .qgo{background:var(--ink);color:var(--paper);border:none;border-radius:3px;padding:0 16px;
+    font-size:11px;letter-spacing:1.6px;font-weight:800;font-family:inherit;text-transform:uppercase}
+  .qgo:active{opacity:.85}
+  .qfoot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}
+  #qMsg{font-size:10.5px;color:var(--ink3);font-family:var(--m)}
+  #qMsg.ok{color:var(--p2)}
+  #qMsg.bad{color:var(--red)}
+  #delBtn{background:none;border:none;color:var(--ink3);font-size:8.5px;letter-spacing:1.2px;
+    text-transform:uppercase;font-weight:800;font-family:inherit;padding:4px 0;white-space:nowrap}
+
   #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);
     transform:translate(-50%,-170%);opacity:0;visibility:hidden;pointer-events:none;
     background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:14px;
@@ -150,6 +172,21 @@
 
 <div class="wrap">
 
+  <!-- ANOTAR — arriba del todo, es lo que mas se usa -->
+  <div class="quick">
+    <div class="qhead"><b>Anotar puntaje</b><span id="syncTxt">conectando…</span></div>
+    <div class="qwho" id="qWho"></div>
+    <div class="qrow">
+      <input class="d" id="fDate" type="date">
+      <input class="s" id="fScore" type="text" inputmode="numeric" placeholder="Puntos" autocomplete="off">
+      <button class="qgo" id="saveBtn">Guardar</button>
+    </div>
+    <div class="qfoot">
+      <span id="qMsg">Elige jugador y escribe los puntos</span>
+      <button id="delBtn">Borrar ese día</button>
+    </div>
+  </div>
+
   <div class="lead">
     <div class="cap" id="leadCap">Clasificación del mes</div>
     <h2 id="leadTitle">—</h2>
@@ -173,23 +210,7 @@
     <div id="weeks"></div>
   </div>
 
-  <div class="sec">
-    <div class="sh"><h3>Anotar <i>puntaje</i></h3><span id="syncTxt">conectando…</span></div>
-    <div class="form" style="margin-top:18px">
-      <div class="fr">
-        <div><label>Jugador</label><select id="fPlayer"></select></div>
-        <div><label>Fecha</label><input id="fDate" type="date"></div>
-      </div>
-      <div class="fr one">
-        <div><label>Puntos · máximo 25.000</label>
-          <input id="fScore" type="text" inputmode="numeric" placeholder="19742" autocomplete="off"></div>
-      </div>
-      <button class="btn" id="saveBtn">Guardar puntaje</button>
-      <button class="btn gh" id="delBtn">Borrar ese día</button>
-    </div>
-  </div>
-
-  <div class="sync"><i class="dot"></i><span id="updTxt">—</span></div>
+  <div class="sync" style="margin-top:26px"><i class="dot"></i><span id="updTxt">—</span></div>
 
   <div class="foot">
     <div class="rule-d"></div>
@@ -512,11 +533,30 @@ function renderWeeks(fs){
   }).join('');
 }
 
+let selPlayer = PLAYERS[0].id;
 function renderPlayerSelect(){
-  const sel = $('fPlayer');
-  if (sel.options.length) return;
-  sel.innerHTML = PLAYERS.map(p => '<option value="' + p.id + '">' + p.nombre + '</option>').join('');
-  $('fDate').value = iso(new Date());
+  const w = $('qWho');
+  w.innerHTML = PLAYERS.map(p =>
+    '<button class="qbtn' + (p.id === selPlayer ? ' on' : '') + '" data-p="' + p.id +
+    '" style="--c:' + p.color + '">' + p.nombre + '</button>').join('');
+  const btns = w.querySelectorAll('.qbtn');
+  for (let i = 0; i < btns.length; i++){
+    btns[i].onclick = () => { selPlayer = btns[i].getAttribute('data-p'); renderPlayerSelect(); prefill(); };
+  }
+  const d = $('fDate');
+  if (!d.value) d.value = iso(new Date());
+}
+function prefill(){
+  const f = $('fDate').value;
+  const v = DATA[f] && DATA[f][selPlayer];
+  $('fScore').value = v ? String(v) : '';
+  setMsg(v ? 'Ya tiene ' + fmt(v) + ' ese día — escribe otro valor para cambiarlo'
+           : 'Listo para anotar', v ? '' : '');
+}
+function setMsg(txt, cls){
+  const m = $('qMsg');
+  m.textContent = txt;
+  m.className = cls || '';
 }
 
 /* ===== ACCIONES ===== */
@@ -526,32 +566,29 @@ function commit(){
   renderAll();
 }
 $('saveBtn').onclick = () => {
-  const pid = $('fPlayer').value, f = $('fDate').value;
+  const pid = selPlayer, f = $('fDate').value;
   const raw = $('fScore').value.replace(/[^0-9]/g,''), v = parseInt(raw, 10);
-  if (!f) return showToast('Falta la fecha', false);
-  if (!raw || isNaN(v)) return showToast('Escribe los puntos', false);
-  if (v < 0 || v > 25000) return showToast('Los puntos van de 0 a 25.000', false);
+  if (!f) return setMsg('Falta la fecha', 'bad');
+  if (!raw || isNaN(v)) return setMsg('Escribe los puntos', 'bad');
+  if (v < 0 || v > 25000) return setMsg('Los puntos van de 0 a 25.000', 'bad');
   if (!DATA[f]) DATA[f] = {};
   const antes = DATA[f][pid];
   DATA[f][pid] = v;
   commit();
   const p = PLAYERS.find(x => x.id === pid);
-  if (antes && v > antes) showToast(p.nombre + ': ' + fmt(v) + ' — ¡récord mejorado!');
-  else showToast(p.nombre + ' · ' + fmt(v) + ' guardado');
+  if (antes && v > antes) setMsg(p.nombre + ': ' + fmt(v) + ' — ¡mejoró su marca!', 'ok');
+  else setMsg(p.nombre + ' · ' + fmt(v) + ' — ' + fmtFechaCorta(f), 'ok');
   $('fScore').value = '';
 };
 $('delBtn').onclick = () => {
-  const pid = $('fPlayer').value, f = $('fDate').value;
-  if (!f || !DATA[f] || !DATA[f][pid]) return showToast('No hay puntaje ese día', false);
+  const pid = selPlayer, f = $('fDate').value;
+  if (!f || !DATA[f] || !DATA[f][pid]) return setMsg('No hay puntaje ese día', 'bad');
   delete DATA[f][pid];
   if (!Object.keys(DATA[f]).length) delete DATA[f];
   commit();
-  showToast('Borrado');
+  setMsg('Borrado', '');
 };
-$('fDate').addEventListener('change', () => {
-  const v = DATA[$('fDate').value] && DATA[$('fDate').value][$('fPlayer').value];
-  $('fScore').value = v ? String(v) : '';
-});
+$('fDate').addEventListener('change', prefill);
 
 /* ===== ARRANQUE ===== */
 try {
