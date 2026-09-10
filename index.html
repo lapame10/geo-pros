@@ -3,229 +3,217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf7f2">
 <title>Geo Pros Championship</title>
 <style>
   :root{
-    --bg:#07080b; --panel:#0e1117; --panel2:#12161e; --line:#1b2029;
-    --txt:#e9ecf2; --dim:#78838f; --dim2:#4e5765;
-    --p1:#4d9fff; --p2:#3dd68c; --p3:#ff8a3d;
-    --mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,monospace;
-    --ok:#3dd68c; --warn:#e5a03d;
+    --paper:#faf7f2; --paper2:#f3eee5; --ink:#1a1613; --ink2:#6d645c; --ink3:#a2988c;
+    --rule:#ddd4c7; --rule2:#ebe4d9;
+    --red:#b8352c; --p1:#1d4ed8; --p2:#166534; --p3:#b45309;
+    --serif:Georgia,'Times New Roman',Times,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --m:ui-monospace,'SF Mono',Menlo,monospace;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;background:var(--bg);color:var(--txt);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;
-    font-size:15px;min-height:100vh;-webkit-text-size-adjust:100%}
-  .wrap{max-width:760px;margin:0 auto;padding:0 14px calc(env(safe-area-inset-bottom,0px) + 40px)}
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:15px;-webkit-text-size-adjust:100%}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px 56px}
 
-  /* ---------- header ---------- */
-  header{padding:calc(env(safe-area-inset-top,0px) + 30px) 16px 0;text-align:center;
-    background:radial-gradient(120% 80% at 50% 0%,rgba(77,159,255,.10),transparent 70%)}
-  .mark{display:inline-flex;align-items:center;gap:9px;margin-bottom:13px;
-    background:linear-gradient(135deg,#1c3a63,#0f2038);border:1px solid #24405f;
-    border-radius:13px;padding:9px 18px;color:#dfe9f7;font-weight:900;font-size:12px;letter-spacing:2.4px}
-  .mark svg{display:block}
-  .eyebrow{font-size:9.5px;letter-spacing:3.2px;color:var(--dim);text-transform:uppercase;font-weight:700}
-  h1{font-size:27px;margin:8px 0 5px;font-weight:800;letter-spacing:-.4px}
-  .sub{font-size:12.5px;color:var(--dim);display:flex;align-items:center;justify-content:center;gap:9px}
-  .sub i{height:1px;width:22px;background:var(--line);display:block}
+  /* ---------- cabecera editorial ---------- */
+  .head{padding:calc(env(safe-area-inset-top,0px) + 26px) 20px 0;text-align:center}
+  .kicker{font-size:9px;letter-spacing:4px;color:var(--ink3);text-transform:uppercase;
+    font-weight:700;margin-bottom:12px}
+  .rule-d{height:0;border-top:3px double var(--ink);margin:0 0 14px}
+  .title{font-family:var(--serif);font-size:38px;line-height:.94;font-weight:400;
+    letter-spacing:-1.2px;margin:0}
+  .title em{font-style:italic;color:var(--red)}
+  .sub{font-family:var(--serif);font-size:12.5px;font-style:italic;color:var(--ink2);
+    margin:11px 0 0}
+  .rule-d.b{margin:14px 0 0}
 
-  /* ---------- barra de estado ---------- */
-  .statusbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
-    margin:16px 0 0;padding:9px 12px;background:var(--panel);border:1px solid var(--line);
-    border-radius:10px;font-family:var(--mono);font-size:10px;color:var(--dim)}
-  .live{display:inline-flex;align-items:center;gap:6px;color:var(--ok)}
-  .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  /* ---------- titular ---------- */
+  .lead{padding:22px 20px 0;text-align:center}
+  .lead .cap{font-size:8.5px;letter-spacing:3px;color:var(--red);text-transform:uppercase;
+    font-weight:800;margin-bottom:9px}
+  .lead h2{font-family:var(--serif);font-size:26px;line-height:1.12;font-weight:400;
+    margin:0;letter-spacing:-.5px}
+  .lead h2 b{font-weight:700}
+  .lead p{font-size:12px;color:var(--ink2);margin:10px 0 0;line-height:1.6}
+
+  /* ---------- tabla del lider ---------- */
+  .stand{margin-top:24px}
+  .strow{display:flex;align-items:baseline;gap:12px;padding:13px 4px;
+    border-top:1px solid var(--rule)}
+  .strow:last-child{border-bottom:1px solid var(--rule)}
+  .strow .n{font-family:var(--serif);font-size:15px;color:var(--ink3);width:22px;flex:0 0 22px}
+  .strow .info{flex:1;min-width:0}
+  .strow .who{font-family:var(--serif);font-size:19px;letter-spacing:-.3px}
+  .strow .who i{display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--c);margin-right:8px;vertical-align:2px}
+  .strow .meta{font-size:10.5px;color:var(--ink3);margin-top:3px;font-family:var(--m)}
+  .strow .pts{font-family:var(--serif);font-size:23px;font-weight:700;letter-spacing:-.8px;
+    font-variant-numeric:tabular-nums}
+  .strow .dlt{font-family:var(--m);font-size:10.5px;color:var(--ink3);text-align:right;
+    min-width:62px;flex:0 0 62px}
+  .strow.first .pts{font-size:28px;color:var(--red)}
+
+  /* ---------- kpis como cintillo ---------- */
+  .strip{display:grid;grid-template-columns:repeat(2,1fr);margin-top:26px;
+    border-top:3px double var(--ink);border-bottom:1px solid var(--rule)}
+  .cell{padding:14px 6px;border-right:1px solid var(--rule2);text-align:center}
+  .cell:nth-child(2n){border-right:none}
+  .cell:nth-child(-n+2){border-bottom:1px solid var(--rule2)}
+  .cell .l{font-size:8px;letter-spacing:1.8px;color:var(--ink3);text-transform:uppercase;font-weight:800}
+  .cell .v{font-family:var(--serif);font-size:22px;font-weight:700;margin-top:6px;letter-spacing:-.6px}
+  .cell .s{font-size:10px;color:var(--ink2);margin-top:3px;font-family:var(--m)}
 
   /* ---------- secciones ---------- */
-  .sec{margin-top:20px}
-  .sechead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px;gap:10px}
-  .sechead h2{font-size:10px;letter-spacing:2.2px;color:var(--dim2);text-transform:uppercase;
-    font-weight:800;margin:0}
-  .sechead span{font-size:10px;color:var(--dim2);font-family:var(--mono)}
-
-  /* ---------- podio ---------- */
-  .podio{display:grid;grid-template-columns:1fr;gap:9px}
-  .prow{display:flex;align-items:center;gap:12px;background:var(--panel);
-    border:1px solid var(--line);border-radius:14px;padding:13px 14px;position:relative;overflow:hidden}
-  .prow.lead{border-color:#26405e;background:linear-gradient(100deg,rgba(77,159,255,.07),var(--panel) 60%)}
-  .prow:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
-  .rk{width:26px;flex:0 0 26px;font-family:var(--mono);font-size:16px;font-weight:800;color:var(--dim2);text-align:center}
-  .prow.lead .rk{color:var(--p1)}
-  .av{width:38px;height:38px;flex:0 0 38px;border-radius:11px;display:flex;align-items:center;
-    justify-content:center;font-weight:900;font-size:14px;color:#08111c;
-    background:linear-gradient(140deg,var(--c),#1b2530)}
-  .pinfo{flex:1;min-width:0}
-  .pn{font-size:15px;font-weight:800;letter-spacing:-.2px}
-  .pm{font-size:10.5px;color:var(--dim);font-family:var(--mono);margin-top:3px}
-  .ptot{text-align:right;flex:0 0 auto}
-  .ptot b{display:block;font-family:var(--mono);font-size:19px;font-weight:800;letter-spacing:-.5px}
-  .ptot i{display:block;font-style:normal;font-family:var(--mono);font-size:10px;color:var(--dim2);margin-top:2px}
-  .ptot i.neg{color:#c4565a}
-
-  /* ---------- kpis ---------- */
-  .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px}
-  .kpi .kl{font-size:8.5px;letter-spacing:1.5px;color:var(--dim2);text-transform:uppercase;font-weight:800}
-  .kpi .kv{font-family:var(--mono);font-size:19px;font-weight:800;margin-top:6px;letter-spacing:-.5px}
-  .kpi .ks{font-size:10px;color:var(--dim2);margin-top:3px;font-family:var(--mono)}
+  .sec{margin-top:32px}
+  .sh{display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:3px double var(--ink);padding-bottom:8px;margin-bottom:2px}
+  .sh h3{font-family:var(--serif);font-size:17px;font-weight:400;margin:0;letter-spacing:-.2px}
+  .sh h3 i{color:var(--red);font-style:normal}
+  .sh span{font-size:9.5px;color:var(--ink3);font-family:var(--m);letter-spacing:.5px}
 
   /* ---------- grafica ---------- */
-  .chart{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px 10px 8px}
-  .chart svg{display:block;width:100%;height:auto;overflow:visible}
-  .legend{display:flex;gap:15px;justify-content:center;padding:4px 0 6px;flex-wrap:wrap}
-  .legend div{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--dim);font-family:var(--mono)}
-  .legend i{width:9px;height:9px;border-radius:3px;background:var(--c);display:block}
+  .plot{padding:18px 0 4px}
+  .plot svg{display:block;width:100%;height:auto;overflow:visible}
+  .lg{display:flex;gap:18px;justify-content:center;padding:10px 0 0;flex-wrap:wrap}
+  .lg div{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink2);
+    font-family:var(--serif)}
+  .lg i{width:14px;height:2px;background:var(--c);display:block}
 
-  /* ---------- tabla ---------- */
-  .wk{margin-bottom:15px;background:var(--panel);border:1px solid var(--line);
-    border-radius:14px;overflow:hidden}
-  .wkhead{display:flex;align-items:center;justify-content:space-between;
-    padding:10px 13px;background:var(--panel2);border-bottom:1px solid var(--line)}
-  .wkhead b{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c9d3e0}
-  .wkhead span{font-family:var(--mono);font-size:10px;color:var(--dim2)}
-  .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
-  th,td{padding:8px 6px;text-align:right;white-space:nowrap;border-bottom:1px solid #14181f}
-  thead th{font-size:8.5px;letter-spacing:.8px;color:var(--dim2);font-weight:800;
-    text-transform:uppercase;padding:7px 6px}
-  tbody tr:last-child td{border-bottom:none}
-  td.nm,th.nm{text-align:left;font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-    font-weight:800;font-size:12px;padding-left:13px}
-  td.dim{color:var(--dim2)}
-  td.tot{color:#dfe9f7;font-weight:800}
-  td.delta{color:#c4565a;font-weight:700}
-  td.lead{color:var(--p1);font-weight:800}
-  .wkfoot{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:#0b0e13}
-  .wkfoot div{padding:8px 10px;border-right:1px solid #14181f;text-align:center}
-  .wkfoot div:last-child{border-right:none}
-  .wkfoot b{display:block;font-family:var(--mono);font-size:14px;font-weight:800}
-  .wkfoot span{font-size:8px;letter-spacing:1.2px;color:var(--dim2);text-transform:uppercase;font-weight:800}
+  /* ---------- semanas ---------- */
+  .wk{margin-top:20px}
+  .wkh{display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:1px solid var(--rule);padding-bottom:7px}
+  .wkh b{font-family:var(--serif);font-size:15px;font-weight:400}
+  .wkh b i{color:var(--red);font-style:normal;font-weight:700}
+  .wkh span{font-size:10px;color:var(--ink3);font-family:var(--m)}
+  .ts{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-family:var(--m);font-size:11.5px}
+  th{font-size:8px;letter-spacing:.5px;color:var(--ink3);text-transform:uppercase;
+    font-weight:800;padding:9px 6px;text-align:right;border-bottom:1px solid var(--rule)}
+  td{padding:10px 6px;text-align:right;border-bottom:1px solid var(--rule2);white-space:nowrap;
+    font-variant-numeric:tabular-nums}
+  td.nm{text-align:left;font-family:var(--serif);font-size:13.5px;padding-left:2px}
+  td.miss{color:#cdc3b6}
+  td.tot{font-weight:700;font-family:var(--serif);font-size:13px}
 
-  /* ---------- formulario ---------- */
-  .form{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px}
-  .frow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
-  .frow.one{grid-template-columns:1fr}
-  label{display:block;font-size:8.5px;letter-spacing:1.4px;color:var(--dim2);
-    text-transform:uppercase;font-weight:800;margin-bottom:6px}
-  input,select{width:100%;background:#080a0e;border:1px solid var(--line);border-radius:11px;
-    color:#fff;font-family:var(--mono);font-size:15px;padding:12px;outline:none;
-    appearance:none;-webkit-appearance:none}
-  select{background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),
-    linear-gradient(135deg,var(--dim) 50%,transparent 50%);
-    background-position:calc(100% - 17px) 20px,calc(100% - 12px) 20px;
+  /* ---------- form ---------- */
+  .form{border-top:1px solid var(--rule);padding-top:16px}
+  .fr{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .fr.one{grid-template-columns:1fr}
+  label{display:block;font-size:8px;letter-spacing:1.8px;color:var(--ink3);
+    text-transform:uppercase;font-weight:800;margin-bottom:5px}
+  input,select{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--ink);
+    color:var(--ink);font-family:var(--serif);font-size:18px;padding:7px 0;outline:none;
+    border-radius:0;appearance:none;-webkit-appearance:none}
+  select{background-image:linear-gradient(45deg,transparent 50%,var(--ink2) 50%),
+    linear-gradient(135deg,var(--ink2) 50%,transparent 50%);
+    background-position:calc(100% - 8px) 16px,calc(100% - 3px) 16px;
     background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-  input:focus,select:focus{border-color:#3d7fc4}
-  .btn{width:100%;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;
-    font-family:inherit;color:#fff;background:linear-gradient(140deg,#2f6fbb,#1b4577);margin-top:3px}
-  .btn:active{transform:scale(.99)}
-  .btn.ghost{background:#141922;border:1px solid var(--line);color:var(--dim);margin-top:8px}
+  input:focus,select:focus{border-bottom-color:var(--red)}
+  .btn{width:100%;border:none;border-radius:0;padding:15px;font-size:11px;letter-spacing:2.4px;
+    text-transform:uppercase;font-weight:800;font-family:inherit;color:var(--paper);
+    background:var(--ink);margin-top:8px}
+  .btn:active{opacity:.86}
+  .btn.gh{background:transparent;border:1.5px solid var(--rule);color:var(--ink2);
+    border-top:none;margin-top:2px}
 
-  /* ---------- toast ---------- */
-  #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 14px);
-    transform:translate(-50%,-160%);opacity:0;visibility:hidden;pointer-events:none;
-    background:linear-gradient(140deg,#2f6fbb,#1b4577);color:#fff;font-weight:800;font-size:13px;
-    padding:11px 18px;border-radius:12px;z-index:60;max-width:88vw;text-align:center;
-    transition:transform .28s,opacity .28s,visibility .28s}
+  #toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);
+    transform:translate(-50%,-170%);opacity:0;visibility:hidden;pointer-events:none;
+    background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:14px;
+    padding:12px 22px;border-radius:3px;z-index:60;max-width:88vw;text-align:center;
+    transition:transform .26s,opacity .26s,visibility .26s}
   #toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
 
-  footer{padding:26px 14px 12px;text-align:center;color:var(--dim2);
-    font-size:9.5px;font-family:var(--mono);line-height:1.9}
-  @media(min-width:560px){ .kpis{grid-template-columns:repeat(4,1fr)} }
+  .foot{padding:30px 0 10px;text-align:center;color:var(--ink3);font-size:10px;
+    font-family:var(--m);line-height:2}
+  .foot .rule-d{margin:0 0 14px}
+  .sync{display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px;font-family:var(--m);font-size:10.5px;color:var(--ink2)}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--p2);animation:pl 2s infinite}
+  @keyframes pl{0%,100%{opacity:1}50%{opacity:.3}}
+  @media(min-width:600px){ .strip{grid-template-columns:repeat(4,1fr)} .cell{border-bottom:none!important;border-right:1px solid var(--rule2)!important} .cell:last-child{border-right:none!important} }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="mark">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7fb2ee" stroke-width="2.2">
-      <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/>
-    </svg>
-    GEO PROS
-  </div>
-  <div class="eyebrow">Campeonato de constancia</div>
-  <h1>Championship</h1>
-  <div class="sub"><i></i><span id="monthLbl">—</span><i></i></div>
-</header>
+<div class="head">
+  <div class="kicker">Campeonato · Temporada 2026</div>
+  <div class="rule-d"></div>
+  <h1 class="title">Geo <em>Pros</em><br>Championship</h1>
+  <div class="sub" id="monthLbl">—</div>
+  <div class="rule-d b"></div>
+</div>
 
 <div class="wrap">
 
-  <div class="statusbar">
-    <span class="live"><i class="dot"></i><span id="syncTxt">conectando…</span></span>
-    <span id="updTxt">—</span>
+  <div class="lead">
+    <div class="cap" id="leadCap">Clasificación del mes</div>
+    <h2 id="leadTitle">—</h2>
+    <p id="leadSub">—</p>
   </div>
 
-  <!-- CLASIFICACION -->
-  <div class="sec">
-    <div class="sechead"><h2>Clasificación del mes</h2><span id="daysTxt">—</span></div>
-    <div class="podio" id="podio"></div>
-  </div>
+  <div class="stand" id="stand"></div>
 
-  <!-- KPIs -->
-  <div class="sec">
-    <div class="sechead"><h2>Datos del torneo</h2><span>acumulado</span></div>
-    <div class="kpis" id="kpis"></div>
-  </div>
+  <div class="strip" id="kpis"></div>
 
-  <!-- GRAFICA -->
   <div class="sec">
-    <div class="sechead"><h2>Evolución acumulada</h2><span>puntos totales</span></div>
-    <div class="chart">
-      <svg id="chart" viewBox="0 0 620 220" preserveAspectRatio="none" role="img" aria-label="Evolución de puntos"></svg>
-      <div class="legend" id="legend"></div>
+    <div class="sh"><h3>El <i>gráfico</i></h3><span id="chartNote">puntos acumulados</span></div>
+    <div class="plot">
+      <svg id="chart" viewBox="0 0 620 200" preserveAspectRatio="none" role="img" aria-label="Evolución"></svg>
+      <div class="lg" id="legend"></div>
     </div>
   </div>
 
-  <!-- SEMANAS -->
   <div class="sec">
-    <div class="sechead"><h2>Detalle semanal</h2><span id="wkCount">—</span></div>
+    <div class="sh"><h3>Semana a <i>semana</i></h3><span id="wkCount">—</span></div>
     <div id="weeks"></div>
   </div>
 
-  <!-- REGISTRO -->
   <div class="sec">
-    <div class="sechead"><h2>Anotar puntaje</h2><span>se guarda en la nube</span></div>
-    <div class="form">
-      <div class="frow">
+    <div class="sh"><h3>Anotar <i>puntaje</i></h3><span id="syncTxt">conectando…</span></div>
+    <div class="form" style="margin-top:18px">
+      <div class="fr">
         <div><label>Jugador</label><select id="fPlayer"></select></div>
         <div><label>Fecha</label><input id="fDate" type="date"></div>
       </div>
-      <div class="frow one">
-        <div><label>Puntos (0 – 25000)</label><input id="fScore" type="text" inputmode="numeric" placeholder="ej: 19742" autocomplete="off"></div>
+      <div class="fr one">
+        <div><label>Puntos · máximo 25.000</label>
+          <input id="fScore" type="text" inputmode="numeric" placeholder="19742" autocomplete="off"></div>
       </div>
       <button class="btn" id="saveBtn">Guardar puntaje</button>
-      <button class="btn ghost" id="delBtn">Borrar ese día</button>
+      <button class="btn gh" id="delBtn">Borrar ese día</button>
     </div>
   </div>
 
-  <footer>
+  <div class="sync"><i class="dot"></i><span id="updTxt">—</span></div>
+
+  <div class="foot">
+    <div class="rule-d"></div>
     Geo Pros Championship · Pame · Ari · Gerry<br>
-    Los datos se sincronizan en la nube en tiempo real
-  </footer>
+    Registro diario · Datos sincronizados en la nube
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-/* ============================================================
-   CONFIG
-   ============================================================ */
+/* ===== CONFIG ===== */
 const RTDB  = 'https://plan-gym-8aff7-default-rtdb.firebaseio.com';
-const CLOUD = 'geopros';                    // raíz en Firebase
-const LSKEY = 'geoProsV1';                  // caché local
-
-// El Mes 1 arrancó el miércoles 2 de septiembre de 2026
+const CLOUD = 'geopros';
+const LSKEY = 'geoProsV1';
 const MES_INICIO = '2026-09-02';
 const MES_FIN    = '2026-09-30';
 
 const PLAYERS = [
-  { id:'pame',  nombre:'Pame',  ini:'PA', color:'#4d9fff' },
-  { id:'ari',   nombre:'Ari',   ini:'AR', color:'#3dd68c' },
-  { id:'gerry', nombre:'Gerry', ini:'GE', color:'#ff8a3d' }
+  { id:'pame',  nombre:'Pame',  ini:'PA', color:'#1d4ed8' },
+  { id:'ari',   nombre:'Ari',   ini:'AR', color:'#166534' },
+  { id:'gerry', nombre:'Gerry', ini:'GE', color:'#b45309' }
 ];
 
-// Puntajes ya cargados desde el Excel (fecha -> jugador -> puntos)
 const SEED = {
   '2026-09-02': { pame:19026, ari:21110, gerry:22362 },
   '2026-09-03': { pame:14598, ari:13854, gerry: 9358 },
@@ -241,41 +229,40 @@ const DAYS_ES = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio',
                'agosto','septiembre','octubre','noviembre','diciembre'];
 
-/* ============================================================
-   UTILIDADES
-   ============================================================ */
 const $ = id => document.getElementById(id);
 const fmt = n => (n===null||n===undefined||isNaN(n)) ? '—' : Math.round(n).toLocaleString('en-US');
 const iso = d => d.toISOString().slice(0,10);
 const parseISO = s => { const p = String(s).split('-'); return new Date(+p[0], +p[1]-1, +p[2]); };
-
-function isoWeekKey(dateStr){                 // clave de la semana (lunes)
+function isoWeekKey(dateStr){
   const d = parseISO(dateStr);
-  const dow = (d.getDay() + 6) % 7;           // 0 = lunes
+  const dow = (d.getDay() + 6) % 7;
   d.setDate(d.getDate() - dow);
   return iso(d);
 }
-
 function showToast(msg, ok){
   const t = $('toast');
   t.textContent = msg;
-  t.style.background = ok === false
-    ? 'linear-gradient(140deg,#8f3237,#5d1f22)'
-    : 'linear-gradient(140deg,#2f6fbb,#1b4577)';
+  t.style.background = ok === false ? '#b8352c' : '#1a1613';
   t.classList.add('on');
   clearTimeout(showToast._t);
   showToast._t = setTimeout(() => t.classList.remove('on'), 3200);
 }
+function horaAhora(){
+  const d = new Date(), p = n => String(n).padStart(2,'0');
+  return p(d.getHours()) + ':' + p(d.getMinutes());
+}
+function fmtFechaCorta(f){
+  const d = parseISO(f);
+  return d.getDate() + ' ' + MESES[d.getMonth()].slice(0,3);
+}
+function fmtFechaLarga(f){
+  const d = parseISO(f);
+  return d.getDate() + ' de ' + MESES[d.getMonth()];
+}
 
-/* ============================================================
-   ESTADO
-   ============================================================ */
-let DATA = {};        // { 'YYYY-MM-DD': { pame:19026, ... } }
-let dirty = false;
-
+/* ===== ESTADO / NUBE ===== */
+let DATA = {};
 function seedIfEmpty(remote){
-  // Si la nube viene vacía y NO hemos sembrado ya en este dispositivo,
-  // subimos los datos del Excel.
   if (remote && Object.keys(remote).length) return remote;
   let seeded = '';
   try { seeded = localStorage.getItem(LSKEY + '_seeded') || ''; } catch(e){}
@@ -284,10 +271,6 @@ function seedIfEmpty(remote){
   saveRemote(SEED);
   return JSON.parse(JSON.stringify(SEED));
 }
-
-/* ============================================================
-   NUBE
-   ============================================================ */
 let saveTimer = null;
 function saveRemote(obj){
   clearTimeout(saveTimer);
@@ -297,18 +280,10 @@ function saveRemote(obj){
       body: JSON.stringify(obj)
     })
     .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); })
-    .then(() => { $('syncTxt').textContent = 'sincronizado'; $('updTxt').textContent = horaAhora(); })
-    .catch(e => { $('syncTxt').textContent = 'sin conexión (local)'; })
-    .finally(() => { dirty = false; });
+    .then(() => { $('syncTxt').textContent = 'guardado ' + horaAhora(); $('updTxt').textContent = 'sincronizado a las ' + horaAhora(); })
+    .catch(() => { $('syncTxt').textContent = 'sin conexión (local)'; });
   }, 600);
 }
-
-function horaAhora(){
-  const d = new Date();
-  const p = n => String(n).padStart(2,'0');
-  return p(d.getHours()) + ':' + p(d.getMinutes());
-}
-
 function loadCloud(){
   $('syncTxt').textContent = 'conectando…';
   fetch(RTDB + '/' + CLOUD + '/scores.json')
@@ -316,11 +291,10 @@ function loadCloud(){
     .then(remote => {
       DATA = seedIfEmpty(remote) || {};
       $('syncTxt').textContent = 'en vivo';
-      $('updTxt').textContent = horaAhora();
+      $('updTxt').textContent = 'sincronizado a las ' + horaAhora();
       renderAll();
     })
     .catch(() => {
-      // Sin nube: usar local, nunca dejar la pantalla vacía
       let local = null;
       try { local = JSON.parse(localStorage.getItem(LSKEY) || 'null'); } catch(e){}
       DATA = local || JSON.parse(JSON.stringify(SEED));
@@ -329,266 +303,211 @@ function loadCloud(){
     });
 }
 
-/* ============================================================
-   CALCULOS
-   ============================================================ */
+/* ===== CALCULOS ===== */
 function fechasDelMes(){
-  const out = [];
-  const d = parseISO(MES_INICIO);
-  const fin = parseISO(MES_FIN);
+  const out = [], d = parseISO(MES_INICIO), fin = parseISO(MES_FIN);
   while (d <= fin){ out.push(iso(d)); d.setDate(d.getDate()+1); }
   return out;
 }
-
-function totalJugador(pid, fechas){
-  return fechas.reduce((s,f) => s + (DATA[f] && DATA[f][pid] ? DATA[f][pid] : 0), 0);
+const totalJugador = (pid, fs) => fs.reduce((s,f) => s + ((DATA[f] && DATA[f][pid]) || 0), 0);
+const jugadosJugador = (pid, fs) => fs.filter(f => DATA[f] && DATA[f][pid]).length;
+function mejorJugador(pid, fs){
+  let b = 0;
+  fs.forEach(f => { const v = DATA[f] && DATA[f][pid]; if (v > b) b = v; });
+  return b || null;
 }
-function jugadosJugador(pid, fechas){
-  return fechas.filter(f => DATA[f] && DATA[f][pid]).length;
+function promedioJugador(pid, fs){
+  const n = jugadosJugador(pid, fs);
+  return n ? totalJugador(pid, fs) / n : null;
 }
-function mejorJugador(pid, fechas){
-  let best = 0;
-  fechas.forEach(f => { const v = DATA[f] && DATA[f][pid]; if (v > best) best = v; });
-  return best || null;
-}
-function promedioJugador(pid, fechas){
-  const n = jugadosJugador(pid, fechas);
-  if (!n) return null;
-  return totalJugador(pid, fechas) / n;
-}
-function rachaMax(pid, fechas){
-  // Máxima secuencia de días jugados entre las fechas con actividad
-  const jugados = fechas.filter(f => DATA[f] && DATA[f][pid]);
-  if (!jugados.length) return 0;
+function rachaMax(pid, fs){
+  const j = fs.filter(f => DATA[f] && DATA[f][pid]);
+  if (!j.length) return 0;
   let best = 1, cur = 1;
-  for (let i=1;i<jugados.length;i++){
-    const prev = parseISO(jugados[i-1]);
-    const now  = parseISO(jugados[i]);
-    const diff = Math.round((now - prev) / 86400000);
-    if (diff === 1){ cur++; } else { cur = 1; }
+  for (let i=1;i<j.length;i++){
+    const diff = Math.round((parseISO(j[i]) - parseISO(j[i-1])) / 86400000);
+    cur = diff === 1 ? cur + 1 : 1;
     if (cur > best) best = cur;
   }
   return best;
 }
-
-function ranking(fechas){
+function ranking(fs){
   return PLAYERS.map(p => ({
     ...p,
-    total: totalJugador(p.id, fechas),
-    dias:  jugadosJugador(p.id, fechas),
-    mejor: mejorJugador(p.id, fechas),
-    prom: promedioJugador(p.id, fechas),
-    racha: rachaMax(p.id, fechas)
+    total: totalJugador(p.id, fs),
+    dias:  jugadosJugador(p.id, fs),
+    mejor: mejorJugador(p.id, fs),
+    prom:  promedioJugador(p.id, fs),
+    racha: rachaMax(p.id, fs)
   })).sort((a,b) => b.total - a.total);
 }
 
-/* ============================================================
-   RENDER
-   ============================================================ */
+/* ===== RENDER ===== */
 function renderAll(){
-  const fechas = fechasDelMes();
-  const rk = ranking(fechas);
+  const fs = fechasDelMes();
+  const rk = ranking(fs);
   const lider = rk[0] ? rk[0].total : 0;
-
-  // mes
   const ini = parseISO(MES_INICIO);
-  $('monthLbl').textContent = MESES[ini.getMonth()].charAt(0).toUpperCase()
-    + MESES[ini.getMonth()].slice(1) + ' ' + ini.getFullYear();
+  const mesTxt = MESES[ini.getMonth()].charAt(0).toUpperCase() + MESES[ini.getMonth()].slice(1);
 
-  const diasConDatos = fechas.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
-  $('daysTxt').textContent = diasConDatos + ' de ' + fechas.length + ' días';
+  $('monthLbl').textContent = mesTxt + ' ' + ini.getFullYear() + ' · Mes 1';
+  const conDatos = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
+  $('kpis').dataset.dias = conDatos + ' de ' + fs.length + ' días';
 
-  renderPodio(rk, lider);
-  renderKpis(rk, fechas, lider);
-  renderChart(fechas);
-  renderWeeks(fechas);
+  renderLead(rk, lider, conDatos, fs.length);
+  renderStand(rk, lider);
+  renderKpis(rk, fs);
+  renderChart(fs);
+  renderWeeks(fs);
   renderPlayerSelect();
 }
 
-function renderPodio(rk, lider){
-  $('podio').innerHTML = rk.map((p,i) => {
-    const delta = i === 0 ? '—' : '−' + fmt(lider - p.total);
-    const cls = i === 0 ? 'prow lead' : 'prow';
-    return '<div class="' + cls + '" style="--c:' + p.color + '">' +
-      '<div class="rk">' + (i+1) + '</div>' +
-      '<div class="av">' + p.ini + '</div>' +
-      '<div class="pinfo"><div class="pn">' + p.nombre + '</div>' +
-      '<div class="pm">' + p.dias + ' días · prom ' + fmt(p.prom) + '</div></div>' +
-      '<div class="ptot"><b style="color:' + p.color + '">' + fmt(p.total) + '</b>' +
-      '<i class="' + (i===0?'':'neg') + '">' + delta + '</i></div>' +
+function renderLead(rk, lider, conDatos, totalDias){
+  if (!rk[0]) { $('leadTitle').textContent = 'Aún sin datos'; return; }
+  const a = rk[0], b = rk[1];
+  const dif = b ? lider - b.total : 0;
+
+  $('leadCap').textContent = conDatos + ' de ' + totalDias + ' días jugados';
+  $('leadTitle').innerHTML = '<b>' + a.nombre.toUpperCase() + '</b> manda con ' +
+    fmt(a.total) + ' puntos';
+
+  // quien sube: mejor promedio
+  const porProm = rk.slice().sort((x,y) => (y.prom||0) - (x.prom||0));
+  const bestProm = porProm[0];
+
+  let txt = b ? ('Le saca ' + fmt(dif) + ' a ' + b.nombre + '. ') : '';
+  if (bestProm && bestProm.id !== a.id) {
+    txt += bestProm.nombre + ' es quien mejor promedio lleva: ' + fmt(bestProm.prom) + ' por partida.';
+  } else if (bestProm) {
+    txt += 'Además, ' + bestProm.nombre + ' tiene el mejor promedio: ' + fmt(bestProm.prom) + ' por partida.';
+  }
+  $('leadSub').textContent = txt;
+}
+
+function renderStand(rk, lider){
+  $('stand').innerHTML = rk.map((p,i) => {
+    const d = i === 0 ? 'líder' : '−' + fmt(lider - p.total);
+    return '<div class="strow' + (i===0 ? ' first' : '') + '" style="--c:' + p.color + '">' +
+      '<div class="n">' + (i+1) + '</div>' +
+      '<div class="info"><div class="who"><i></i>' + p.nombre + '</div>' +
+        '<div class="meta">' + p.dias + ' días · prom ' + fmt(p.prom) + ' · máx ' + fmt(p.mejor) + '</div></div>' +
+      '<div class="pts">' + fmt(p.total) + '</div>' +
+      '<div class="dlt">' + d + '</div>' +
     '</div>';
   }).join('');
 }
 
-function renderKpis(rk, fechas, lider){
-  let mejorGlobal = 0, mejorQuien = '—', mejorFecha = '';
+function renderKpis(rk, fs){
+  let mejor = 0, quien = '—', fecha = '';
   const porDia = {};
-  fechas.forEach(f => {
+  fs.forEach(f => {
     if (!DATA[f]) return;
-    const totalDia = Object.keys(DATA[f]).reduce((s,k) => s + (DATA[f][k]||0), 0);
-    porDia[f] = totalDia;
+    porDia[f] = Object.keys(DATA[f]).reduce((s,k) => s + (DATA[f][k]||0), 0);
     PLAYERS.forEach(p => {
       const v = DATA[f][p.id];
-      if (v && v > mejorGlobal){ mejorGlobal = v; mejorQuien = p.nombre; mejorFecha = f; }
+      if (v && v > mejor){ mejor = v; quien = p.nombre; fecha = f; }
     });
   });
+  const n = Object.keys(porDia).length || 1;
+  const prom = Object.values(porDia).reduce((s,v)=>s+v,0) / n;
+  const racha = Math.max.apply(null, rk.map(p => p.racha).concat([0]));
+  const jugados = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
 
-  // Mejor día colectivo
-  let topDia = '', topDiaVal = 0;
-  Object.keys(porDia).forEach(f => { if (porDia[f] > topDiaVal){ topDiaVal = porDia[f]; topDia = f; } });
-
-  const diasConDatos = Object.keys(porDia).length || 1;
-  const promGlobal = Object.values(porDia).reduce((s,v)=>s+v,0) / diasConDatos;
-  const rachaTop = Math.max.apply(null, rk.map(p => p.racha).concat([0]));
-
-  const kpi = (l,v,s,c) =>
-    '<div class="kpi"><div class="kl">' + l + '</div>' +
-    '<div class="kv"' + (c ? ' style="color:'+c+'"' : '') + '>' + v + '</div>' +
-    '<div class="ks">' + s + '</div></div>';
+  const c = (l,v,s) => '<div class="cell"><div class="l">' + l + '</div>' +
+    '<div class="v">' + v + '</div><div class="s">' + s + '</div></div>';
 
   $('kpis').innerHTML =
-    kpi('Líder del mes', fmt(lider), rk[0] ? rk[0].nombre : '—', rk[0] ? rk[0].color : '') +
-    kpi('Mejor puntaje', fmt(mejorGlobal || null),
-        mejorQuien + (mejorFecha ? ' · ' + fmtFechaCorta(mejorFecha) : '')) +
-    kpi('Promedio por día', fmt(promGlobal), 'los 3 juntos') +
-    kpi('Mejor racha', rachaTop + ' días', 'seguidos jugando');
+    c('Puntaje récord', fmt(mejor || null), quien + (fecha ? ' · ' + fmtFechaCorta(fecha) : '')) +
+    c('Promedio diario', fmt(prom), 'los tres juntos') +
+    c('Días jugados', jugados, 'de ' + fs.length + ' del mes') +
+    c('Mejor racha', racha, 'días seguidos');
 }
 
-function fmtFechaCorta(f){
-  const d = parseISO(f);
-  return d.getDate() + ' ' + MESES[d.getMonth()].slice(0,3);
-}
-
-function renderChart(fechas){
+function renderChart(fs){
   const svg = $('chart');
-  const W = 620, H = 220, PL = 46, PR = 12, PT = 14, PB = 24;
-  const active = fechas.filter(f => DATA[f] && Object.keys(DATA[f]).length);
-  if (active.length < 2){
-    svg.innerHTML = '<text x="310" y="110" fill="#4e5765" font-size="12" ' +
-      'text-anchor="middle" font-family="monospace">Faltan días para dibujar la evolución</text>';
+  const W = 620, H = 200, PL = 42, PR = 14, PT = 12, PB = 26;
+  const act = fs.filter(f => DATA[f] && Object.keys(DATA[f]).length);
+  if (act.length < 2){
+    svg.innerHTML = '<text x="310" y="100" fill="#a2988c" font-size="12" text-anchor="middle" ' +
+      'font-family="Georgia,serif" font-style="italic">Faltan días para dibujar el gráfico</text>';
     $('legend').innerHTML = '';
     return;
   }
-
-  // acumulados
-  const series = {};
-  PLAYERS.forEach(p => { series[p.id] = []; });
-  let run = {}; PLAYERS.forEach(p => run[p.id] = 0);
-  active.forEach(f => {
-    PLAYERS.forEach(p => {
-      const v = (DATA[f] && DATA[f][p.id]) || 0;
-      run[p.id] += v;
-      series[p.id].push(run[p.id]);
-    });
-  });
-
+  const series = {}, run = {};
+  PLAYERS.forEach(p => { series[p.id] = []; run[p.id] = 0; });
+  act.forEach(f => PLAYERS.forEach(p => {
+    run[p.id] += (DATA[f] && DATA[f][p.id]) || 0;
+    series[p.id].push(run[p.id]);
+  }));
   const maxV = Math.max.apply(null, PLAYERS.map(p => series[p.id][series[p.id].length-1]).concat([1]));
-  const stepX = (W - PL - PR) / Math.max(1, active.length - 1);
-  const yOf = v => PT + (H - PT - PB) * (1 - v / (maxV * 1.08));
+  const stepX = (W - PL - PR) / Math.max(1, act.length - 1);
+  const yOf = v => PT + (H - PT - PB) * (1 - v / (maxV * 1.10));
   const xOf = i => PL + stepX * i;
 
   let g = '';
-  // rejilla horizontal (4 lineas)
   for (let i=0;i<=4;i++){
-    const v = maxV * 1.08 * i/4;
-    const y = yOf(v);
-    g += '<line x1="' + PL + '" y1="' + y.toFixed(1) + '" x2="' + (W-PR) + '" y2="' + y.toFixed(1) +
-         '" stroke="#161b23" stroke-width="1"/>';
-    g += '<text x="' + (PL-7) + '" y="' + (y+3.5).toFixed(1) + '" fill="#4e5765" font-size="9" ' +
-         'text-anchor="end" font-family="monospace">' + Math.round(v/1000) + 'k</text>';
+    const y = yOf(maxV * 1.10 * i/4);
+    g += '<line x1="'+PL+'" y1="'+y.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+y.toFixed(1)+
+         '" stroke="#e6ded1" stroke-width="1"/>' +
+         '<text x="'+(PL-7)+'" y="'+(y+3.5).toFixed(1)+'" fill="#a2988c" font-size="9" ' +
+         'text-anchor="end" font-family="Georgia,serif">'+Math.round(maxV*1.10*i/4/1000)+'k</text>';
   }
-  // eje X (fechas)
-  active.forEach((f,i) => {
-    if (active.length > 8 && i % 2) return;
-    g += '<text x="' + xOf(i).toFixed(1) + '" y="' + (H-6) + '" fill="#4e5765" font-size="8.5" ' +
-         'text-anchor="middle" font-family="monospace">' + parseISO(f).getDate() + '</text>';
+  act.forEach((f,i) => {
+    if (act.length > 8 && i % 2) return;
+    g += '<text x="'+xOf(i).toFixed(1)+'" y="'+(H-8)+'" fill="#a2988c" font-size="9" ' +
+         'text-anchor="middle" font-family="Georgia,serif">'+parseISO(f).getDate()+'</text>';
   });
-
   PLAYERS.forEach(p => {
-    const pts = series[p.id].map((v,i) => xOf(i).toFixed(1) + ',' + yOf(v).toFixed(1)).join(' ');
-    g += '<polyline points="' + pts + '" fill="none" stroke="' + p.color +
-         '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>';
-    // ultimo punto destacado
+    const pts = series[p.id].map((v,i) => xOf(i).toFixed(1)+','+yOf(v).toFixed(1)).join(' ');
+    g += '<polyline points="'+pts+'" fill="none" stroke="'+p.color+
+         '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
     const li = series[p.id].length - 1;
-    g += '<circle cx="' + xOf(li).toFixed(1) + '" cy="' + yOf(series[p.id][li]).toFixed(1) +
-         '" r="4" fill="' + p.color + '" stroke="#0e1117" stroke-width="2"/>';
+    g += '<circle cx="'+xOf(li).toFixed(1)+'" cy="'+yOf(series[p.id][li]).toFixed(1)+
+         '" r="3.6" fill="'+p.color+'"/>';
   });
-
   svg.innerHTML = g;
   $('legend').innerHTML = PLAYERS.map(p =>
-    '<div style="--c:' + p.color + '"><i></i>' + p.nombre + '</div>').join('');
+    '<div style="--c:'+p.color+'"><i></i>'+p.nombre+'</div>').join('');
 }
 
-function renderWeeks(fechas){
-  // agrupar por semana (lunes)
+function renderWeeks(fs){
   const groups = {};
-  fechas.forEach(f => {
+  fs.forEach(f => {
     const k = isoWeekKey(f);
-    if (!groups[k]) groups[k] = [];
-    groups[k].push(f);
+    (groups[k] = groups[k] || []).push(f);
   });
   const keys = Object.keys(groups).sort();
-
   $('wkCount').textContent = keys.length + ' semanas';
 
   $('weeks').innerHTML = keys.map((k, wi) => {
     const dias = groups[k];
-    const head = '<div class="wkhead"><b>Semana ' + (wi+1) + '</b><span>' +
-      fmtFechaCorta(dias[0]) + ' – ' + fmtFechaCorta(dias[dias.length-1]) + '</span></div>';
-
-    // columnas: solo los dias que existen en el mes
     const cols = dias.map(f => {
       const d = parseISO(f);
-      const dow = (d.getDay()+6)%7;
-      return { f:f, lbl: DAYS_ES[dow], n:d.getDate() };
+      return { f:f, lbl: DAYS_ES[(d.getDay()+6)%7], n:d.getDate() };
     });
+    const th = '<tr><th style="text-align:left">Sem ' + (wi+1) + '</th>' +
+      cols.map(c => '<th>' + c.lbl.slice(0,1) + c.n + '</th>').join('') +
+      '<th>Total</th><th>#</th></tr>';
 
-    const th = '<tr><th class="nm">' + '</th>' +
-      cols.map(c => '<th>' + c.lbl + ' ' + c.n + '</th>').join('') +
-      '<th>Total</th><th>Rk</th></tr>';
-
-    const rows = PLAYERS.map(p => {
-      let tot = 0;
-      const tds = cols.map(c => {
-        const v = DATA[c.f] && DATA[c.f][p.id];
-        if (v) { tot += v; return '<td>' + fmt(v) + '</td>'; }
-        return '<td class="dim">·</td>';
-      }).join('');
-      return '<tr><td class="nm" style="color:' + p.color + '">' + p.nombre + '</td>' +
-             tds + '<td class="tot">' + fmt(tot) + '</td><td></td></tr>';
-    }).join('');
-
-    // rank y delta de la semana
-    const totals = PLAYERS.map(p => {
+    const tot = PLAYERS.map(p => {
       let t = 0;
       dias.forEach(f => { const v = DATA[f] && DATA[f][p.id]; if (v) t += v; });
-      return { nombre:p.nombre, total:t };
+      return { p, total:t };
     }).sort((a,b) => b.total - a.total);
 
-    // recalcular filas con rank+delta insertado
-    const rowsFinal = totals.map((t, i) => {
-      const p = PLAYERS.find(x => x.nombre === t.nombre);
-      const delta = i===0 ? '—' : '−' + fmt(totals[0].total - t.total);
+    const rows = tot.map((t, i) => {
       const tds = cols.map(c => {
-        const v = DATA[c.f] && DATA[c.f][p.id];
-        return v ? '<td>' + fmt(v) + '</td>' : '<td class="dim">·</td>';
+        const v = DATA[c.f] && DATA[c.f][t.p.id];
+        return v ? '<td>' + fmt(v) + '</td>' : '<td class="miss">–</td>';
       }).join('');
-      return '<tr><td class="nm" style="color:' + p.color + '">' + p.nombre + '</td>' + tds +
-        '<td class="tot">' + fmt(t.total) + '</td>' +
-        '<td class="' + (i===0?'lead':'') + '">' + (i+1) + '</td></tr>';
+      return '<tr><td class="nm" style="color:' + t.p.color + '">' + t.p.nombre + '</td>' +
+        tds + '<td class="tot">' + fmt(t.total) + '</td>' +
+        '<td' + (i===0 ? ' style="font-weight:700"' : '') + '>' + (i+1) + '</td></tr>';
     }).join('');
 
-    const nJug = dias.filter(f => DATA[f] && Object.keys(DATA[f]).length).length;
-
-    return '<div class="wk">' + head +
-      '<div class="tscroll"><table><thead>' + th + '</thead><tbody>' + rowsFinal +
-      '</tbody></table></div>' +
-      '<div class="wkfoot">' +
-        '<div><b>' + nJug + '/' + dias.length + '</b><span>días jugados</span></div>' +
-        '<div><b style="color:' + (PLAYERS.find(x=>x.nombre===totals[0].nombre).color) + '">' +
-          totals[0].nombre + '</b><span>líder semana</span></div>' +
-        '<div><b>' + fmt(totals.reduce((s,t)=>s+t.total,0)) + '</b><span>puntos totales</span></div>' +
-      '</div>' +
+    return '<div class="wk"><div class="wkh"><b>Semana <i>' + (wi+1) + '</i></b><span>' +
+      fmtFechaCorta(dias[0]) + ' – ' + fmtFechaCorta(dias[dias.length-1]) + '</span></div>' +
+      '<div class="ts"><table><thead>' + th + '</thead><tbody>' + rows + '</tbody></table></div>' +
     '</div>';
   }).join('');
 }
@@ -600,62 +519,45 @@ function renderPlayerSelect(){
   $('fDate').value = iso(new Date());
 }
 
-/* ============================================================
-   ACCIONES
-   ============================================================ */
+/* ===== ACCIONES ===== */
 function commit(){
   try { localStorage.setItem(LSKEY, JSON.stringify(DATA)); } catch(e){}
   saveRemote(DATA);
   renderAll();
 }
-
 $('saveBtn').onclick = () => {
-  const pid  = $('fPlayer').value;
-  const f    = $('fDate').value;
-  const raw  = $('fScore').value.replace(/[^0-9]/g,'');
-  const v    = parseInt(raw, 10);
-
+  const pid = $('fPlayer').value, f = $('fDate').value;
+  const raw = $('fScore').value.replace(/[^0-9]/g,''), v = parseInt(raw, 10);
   if (!f) return showToast('Falta la fecha', false);
   if (!raw || isNaN(v)) return showToast('Escribe los puntos', false);
   if (v < 0 || v > 25000) return showToast('Los puntos van de 0 a 25.000', false);
-
   if (!DATA[f]) DATA[f] = {};
   const antes = DATA[f][pid];
   DATA[f][pid] = v;
   commit();
-
   const p = PLAYERS.find(x => x.id === pid);
-  if (antes && v > antes) showToast(p.nombre + ': ¡' + fmt(v) + '! (+' + fmt(v-antes) + ')');
+  if (antes && v > antes) showToast(p.nombre + ': ' + fmt(v) + ' — ¡récord mejorado!');
   else showToast(p.nombre + ' · ' + fmt(v) + ' guardado');
   $('fScore').value = '';
 };
-
 $('delBtn').onclick = () => {
-  const pid = $('fPlayer').value;
-  const f   = $('fDate').value;
+  const pid = $('fPlayer').value, f = $('fDate').value;
   if (!f || !DATA[f] || !DATA[f][pid]) return showToast('No hay puntaje ese día', false);
   delete DATA[f][pid];
   if (!Object.keys(DATA[f]).length) delete DATA[f];
   commit();
   showToast('Borrado');
 };
-
 $('fDate').addEventListener('change', () => {
-  const pid = $('fPlayer').value;
-  const f = $('fDate').value;
-  const v = DATA[f] && DATA[f][pid];
+  const v = DATA[$('fDate').value] && DATA[$('fDate').value][$('fPlayer').value];
   $('fScore').value = v ? String(v) : '';
 });
 
-/* ============================================================
-   ARRANQUE
-   ============================================================ */
+/* ===== ARRANQUE ===== */
 try {
-  const cached = JSON.parse(localStorage.getItem(LSKEY) || 'null');
-  DATA = cached || JSON.parse(JSON.stringify(SEED));
-} catch(e){
-  DATA = JSON.parse(JSON.stringify(SEED));
-}
+  const c = JSON.parse(localStorage.getItem(LSKEY) || 'null');
+  DATA = c || JSON.parse(JSON.stringify(SEED));
+} catch(e){ DATA = JSON.parse(JSON.stringify(SEED)); }
 renderAll();
 loadCloud();
 </script>
